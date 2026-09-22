@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Crew Board</title>
 <style>
-  body { margin: 0; background: #0d0e10; font-family: system-ui, sans-serif; }
+  html, body { height: 100%; margin: 0; background: #0d0e10; font-family: system-ui, sans-serif; overflow: hidden; }
+  #root { height: 100%; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
 </style>
 </head>
 <body>
@@ -12786,14 +12787,61 @@
     ban: [
       "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z",
       "M4.9 4.9l14.2 14.2"
+    ],
+    excavator: [
+      "M2 17h12v3H2z",
+      "M5 17V11h5l2 2v4",
+      "M10 11l7-6",
+      "M17 5l4 5",
+      "M21 10l-2.5 3-2.5-1.5"
+    ],
+    dumptruck: [
+      "M2 19V11h4l3 4v4",
+      "M9 19h3",
+      "M12 19 17 5h4l-2 9z",
+      "M21 5l2 2-1 2",
+      "M6 21.5a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6z",
+      "M14 21.5a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6z"
     ]
   };
   var CIRCLE_ICONS = {
+    dumptruck: [
+      { cx: 22, cy: 8, r: 0.6 },
+      { cx: 23, cy: 11, r: 0.6 },
+      { cx: 21.5, cy: 13.5, r: 0.6 }
+    ],
     users: [{ cx: 9, cy: 7, r: 4 }],
     user: [{ cx: 12, cy: 7, r: 4 }],
     usercog: [{ cx: 10, cy: 7, r: 4 }],
-    pin: [{ cx: 12, cy: 9, r: 2.5 }]
+    pin: [{ cx: 12, cy: 9, r: 2.5 }],
+    gripvertical: [
+      { cx: 9, cy: 5, r: 1 },
+      { cx: 9, cy: 12, r: 1 },
+      { cx: 9, cy: 19, r: 1 },
+      { cx: 15, cy: 5, r: 1 },
+      { cx: 15, cy: 12, r: 1 },
+      { cx: 15, cy: 19, r: 1 }
+    ]
   };
+  ICON_PATHS.note = [
+    "M15.5 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5L15.5 3z",
+    "M15 3v6h6"
+  ];
+  ICON_PATHS.pencil = [
+    "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .622.622l4.353-1.321a2 2 0 0 0 .83-.497z",
+    "M15 5l4 4"
+  ];
+  ICON_PATHS.check = ["M20 6 9 17l-5-5"];
+  ICON_PATHS.download = [
+    "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4",
+    "M7 10l5 5 5-5",
+    "M12 15V3"
+  ];
+  ICON_PATHS.upload = [
+    "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4",
+    "M17 8l-5-5-5 5",
+    "M12 3v12"
+  ];
   function Icon({ name, size = 14, color = "currentColor", ...rest }) {
     const paths = ICON_PATHS[name] || [];
     const circles = CIRCLE_ICONS[name] || [];
@@ -12822,6 +12870,12 @@
   function Wrench(p) {
     return import_react.default.createElement(Icon, { name: "wrench", ...p });
   }
+  function Excavator(p) {
+    return import_react.default.createElement(Icon, { name: "excavator", ...p });
+  }
+  function DumpTruck(p) {
+    return import_react.default.createElement(Icon, { name: "dumptruck", ...p });
+  }
   function Link2(p) {
     return import_react.default.createElement(Icon, { name: "link2", ...p });
   }
@@ -12845,6 +12899,24 @@
   }
   function Pin(p) {
     return import_react.default.createElement(Icon, { name: "pin", ...p });
+  }
+  function GripVertical(p) {
+    return import_react.default.createElement(Icon, { name: "gripvertical", ...p });
+  }
+  function NoteIcon(p) {
+    return import_react.default.createElement(Icon, { name: "note", ...p });
+  }
+  function Pencil(p) {
+    return import_react.default.createElement(Icon, { name: "pencil", ...p });
+  }
+  function Check(p) {
+    return import_react.default.createElement(Icon, { name: "check", ...p });
+  }
+  function Download(p) {
+    return import_react.default.createElement(Icon, { name: "download", ...p });
+  }
+  function Upload(p) {
+    return import_react.default.createElement(Icon, { name: "upload", ...p });
   }
   function CornerDownRight(p) {
     return import_react.default.createElement(Icon, { name: "cornerdownright", ...p });
@@ -12870,7 +12942,13 @@
   var TYPE_COLORS = {
     crew: { fill: "#3B82F6", text: "#0B2A57" },
     equipment: { fill: "#EAB308", text: "#3F2E02" },
+    miniexcavator: { fill: "#16A34A", text: "#052E16" },
     dumptruck: { fill: "#14B8A6", text: "#08312C" },
+    vactruck: { fill: "#F97316", text: "#4A1D02" },
+    smalldump: { fill: "#84CC16", text: "#2B3D02" },
+    rentaltruck: { fill: "#6366F1", text: "#1E1B4B" },
+    skidloader: { fill: "#DC2626", text: "#450A0A" },
+    cranelowboy: { fill: "#B45309", text: "#3D1B02" },
     attachment: { fill: "#8B5CF6", text: "#2A1E5C" },
     driver: { fill: "#EC4899", text: "#4B1330" },
     operator: { fill: "#06B6D4", text: "#052E36" }
@@ -12878,14 +12956,21 @@
   var TYPE_SCALE = {
     crew: { font: 13, denseFont: 12, icon: 15, pad: "7px 10px", densePad: "5px 8px" },
     equipment: { font: 12, denseFont: 11, icon: 13, pad: "7px 9px", densePad: "4px 7px" },
+    miniexcavator: { font: 12, denseFont: 11, icon: 13, pad: "7px 9px", densePad: "4px 7px" },
     dumptruck: { font: 12, denseFont: 11, icon: 13, pad: "7px 9px", densePad: "4px 7px" },
+    vactruck: { font: 12, denseFont: 11, icon: 13, pad: "7px 9px", densePad: "4px 7px" },
+    smalldump: { font: 12, denseFont: 11, icon: 13, pad: "7px 9px", densePad: "4px 7px" },
+    rentaltruck: { font: 12, denseFont: 11, icon: 13, pad: "7px 9px", densePad: "4px 7px" },
+    skidloader: { font: 12, denseFont: 11, icon: 13, pad: "7px 9px", densePad: "4px 7px" },
+    cranelowboy: { font: 12, denseFont: 11, icon: 13, pad: "7px 9px", densePad: "4px 7px" },
     attachment: { font: 10.5, denseFont: 10, icon: 11, pad: "6px 8px", densePad: "3px 6px" },
     driver: { font: 10.5, denseFont: 10, icon: 11, pad: "6px 8px", densePad: "3px 6px" },
     operator: { font: 10.5, denseFont: 10, icon: 11, pad: "6px 8px", densePad: "3px 6px" }
   };
   var DAY_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  var TYPE_LABELS = { crew: "Crew", equipment: "Excavator", dumptruck: "Dump Truck", attachment: "Attachment", driver: "Driver", operator: "Operator" };
-  var EQUIPMENT_TIER_TYPES = ["equipment", "dumptruck"];
+  var WEEKDAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  var TYPE_LABELS = { crew: "Crew", equipment: "Excavator", miniexcavator: "Mini Excavators", dumptruck: "Dump Truck", vactruck: "VAC Trucks", smalldump: "Small Dumps", rentaltruck: "Rental Trucks", skidloader: "Skid Loaders", cranelowboy: "Crane/LowBoy", attachment: "Attachment", driver: "Driver", operator: "Operator" };
+  var EQUIPMENT_TIER_TYPES = ["equipment", "miniexcavator", "dumptruck", "smalldump", "vactruck", "rentaltruck", "skidloader", "cranelowboy"];
   var LEVEL2_TYPES = ["attachment", "driver", "operator"];
   function startOfWeek(date) {
     const d = new Date(date);
@@ -12897,6 +12982,26 @@
   }
   function formatShort(date) {
     return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  }
+  function toDateKey(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  }
+  function dateKeyToDate(key) {
+    const [y, m, d] = key.split("-").map(Number);
+    return new Date(y, m - 1, d);
+  }
+  function addWorkdays(base, n) {
+    const d = new Date(base);
+    let remaining = Math.abs(n);
+    const step = n >= 0 ? 1 : -1;
+    while (remaining > 0) {
+      d.setDate(d.getDate() + step);
+      if (d.getDay() !== 0) remaining--;
+    }
+    return d;
   }
   var idCounter = 1e3;
   function nextId() {
@@ -12924,6 +13029,21 @@
       });
     });
     idCounter = maxId;
+  }
+  function migrateAssignmentsToDates(assignments) {
+    const needsMigration = assignments.some((a) => typeof a.day === "number" || a.day === null);
+    if (!needsMigration) return assignments;
+    const anchor = startOfWeek(/* @__PURE__ */ new Date());
+    return assignments.map((a) => {
+      if (!("day" in a)) return a;
+      const { day, ...rest } = a;
+      if (typeof day === "number") {
+        const d = new Date(anchor);
+        d.setDate(d.getDate() + day);
+        return { ...rest, date: toDateKey(d) };
+      }
+      return { ...rest, date: null };
+    });
   }
   function removeWithDescendants(prevAssignments, rootIds) {
     const removeSet = new Set(rootIds);
@@ -12965,37 +13085,252 @@
       ]
     );
     const [assignments, setAssignments] = (0, import_react2.useState)(() => {
-      if (persisted?.assignments) return persisted.assignments;
-      const crewA = { id: nextId(), resourceId: 2, jobId: 1, day: 0, parentAssignmentId: null };
-      const crewB = { id: nextId(), resourceId: 2, jobId: 1, day: 1, parentAssignmentId: null };
-      const crewC = { id: nextId(), resourceId: 3, jobId: 2, day: 2, parentAssignmentId: null };
-      const equipA = { id: nextId(), resourceId: 4, jobId: null, day: null, parentAssignmentId: crewA.id };
-      const truckA = { id: nextId(), resourceId: 5, jobId: null, day: null, parentAssignmentId: crewC.id };
+      if (persisted?.assignments) return migrateAssignmentsToDates(persisted.assignments);
+      const seedAnchor = startOfWeek(/* @__PURE__ */ new Date());
+      const seedDate = (offset) => {
+        const d = new Date(seedAnchor);
+        d.setDate(d.getDate() + offset);
+        return toDateKey(d);
+      };
+      const crewA = { id: nextId(), resourceId: 2, jobId: 1, date: seedDate(0), parentAssignmentId: null };
+      const crewB = { id: nextId(), resourceId: 2, jobId: 1, date: seedDate(1), parentAssignmentId: null };
+      const crewC = { id: nextId(), resourceId: 3, jobId: 2, date: seedDate(2), parentAssignmentId: null };
+      const equipA = { id: nextId(), resourceId: 4, jobId: null, date: null, parentAssignmentId: crewA.id };
+      const truckA = { id: nextId(), resourceId: 5, jobId: null, date: null, parentAssignmentId: crewC.id };
       return [
         crewA,
         crewB,
         equipA,
-        { id: nextId(), resourceId: 7, jobId: null, day: null, parentAssignmentId: equipA.id },
-        { id: nextId(), resourceId: 8, jobId: null, day: null, parentAssignmentId: equipA.id },
-        { id: nextId(), resourceId: 11, jobId: null, day: null, parentAssignmentId: equipA.id },
+        { id: nextId(), resourceId: 7, jobId: null, date: null, parentAssignmentId: equipA.id },
+        { id: nextId(), resourceId: 8, jobId: null, date: null, parentAssignmentId: equipA.id },
+        { id: nextId(), resourceId: 11, jobId: null, date: null, parentAssignmentId: equipA.id },
         crewC,
         truckA,
-        { id: nextId(), resourceId: 9, jobId: null, day: null, parentAssignmentId: truckA.id }
+        { id: nextId(), resourceId: 9, jobId: null, date: null, parentAssignmentId: truckA.id }
       ];
     });
+    const [notes, setNotes] = (0, import_react2.useState)(() => persisted?.notes || []);
+    const [lastSavedAt, setLastSavedAt] = (0, import_react2.useState)(() => persisted?.lastSavedAt || null);
+    const isInitialSave = (0, import_react2.useRef)(true);
+    const importInputRef = (0, import_react2.useRef)(null);
+    const bridgeImportInputRef = (0, import_react2.useRef)(null);
     (0, import_react2.useEffect)(() => {
+      const nextSavedAt = isInitialSave.current ? persisted?.lastSavedAt || (/* @__PURE__ */ new Date()).toISOString() : (/* @__PURE__ */ new Date()).toISOString();
+      isInitialSave.current = false;
       try {
-        window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ resources, jobs, assignments }));
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ resources, jobs, assignments, notes, lastSavedAt: nextSavedAt }));
       } catch {
       }
-    }, [resources, jobs, assignments]);
-    const [weekOffset, setWeekOffset] = (0, import_react2.useState)(0);
+      setLastSavedAt(nextSavedAt);
+    }, [resources, jobs, assignments, notes]);
+    function formatSavedAt(iso) {
+      if (!iso) return "never";
+      try {
+        const d = new Date(iso);
+        return d.toLocaleDateString(void 0, { month: "short", day: "numeric" }) + " at " + d.toLocaleTimeString(void 0, { hour: "numeric", minute: "2-digit" });
+      } catch {
+        return "unknown";
+      }
+    }
+    function exportBoardData() {
+      const payload = { resources, jobs, assignments, notes, lastSavedAt: lastSavedAt || (/* @__PURE__ */ new Date()).toISOString(), exportedAt: (/* @__PURE__ */ new Date()).toISOString() };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      const stamp = (/* @__PURE__ */ new Date()).toISOString().slice(0, 16).replace(/[:T]/g, "-");
+      a.href = url;
+      a.download = `crew-board-backup-${stamp}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+    function triggerImport() {
+      if (importInputRef.current) importInputRef.current.click();
+    }
+    function exportJobsForProjectHub() {
+      const payload = {
+        type: "crewboard-projecthub-bridge",
+        direction: "crewboard-to-projecthub",
+        exportedAt: (/* @__PURE__ */ new Date()).toISOString(),
+        items: jobs.map((j) => ({
+          sourceJobId: j.id,
+          title: j.name,
+          location: j.location,
+          status: j.status === "completed" ? "done" : "todo"
+        }))
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      const stamp = (/* @__PURE__ */ new Date()).toISOString().slice(0, 16).replace(/[:T]/g, "-");
+      a.href = url;
+      a.download = `crew-board-jobs-for-project-hub-${stamp}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      setBlockedMessage(`Exported ${jobs.length} job${jobs.length === 1 ? "" : "s"} — import this file in Project Hub.`, 4500);
+    }
+    function triggerBridgeImport() {
+      if (bridgeImportInputRef.current) bridgeImportInputRef.current.click();
+    }
+    function handleBridgeImportFile(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(String(reader.result));
+          if (!parsed || parsed.type !== "crewboard-projecthub-bridge" || parsed.direction !== "projecthub-to-crewboard" || !Array.isArray(parsed.items)) {
+            setBlockedMessage("That file doesn't look like a Project Hub export for Crew Board — import cancelled.", 5e3);
+            return;
+          }
+          let added = 0;
+          let updated = 0;
+          setJobs((prev) => {
+            const next = [...prev];
+            parsed.items.forEach((item) => {
+              if (!item || !item.title) return;
+              const idx = next.findIndex((j) => j.sourceTaskId && j.sourceTaskId === item.sourceTaskId);
+              if (idx !== -1) {
+                next[idx] = { ...next[idx], name: item.title, location: item.location || next[idx].location };
+                updated++;
+              } else {
+                next.push({ id: nextId(), name: item.title, location: item.location || "—", sourceTaskId: item.sourceTaskId });
+                added++;
+              }
+            });
+            return next;
+          });
+          setBlockedMessage(`Imported from Project Hub: ${added} new job${added === 1 ? "" : "s"}, ${updated} updated.`, 5e3);
+        } catch (err) {
+          setBlockedMessage("Couldn't read that file — make sure it's a Project Hub export for Crew Board.", 5e3);
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = "";
+    }
+    function handleImportFile(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(String(reader.result));
+          if (!parsed || !Array.isArray(parsed.resources) || !Array.isArray(parsed.jobs) || !Array.isArray(parsed.assignments)) {
+            setBlockedMessage("That file doesn't look like a Crew Board backup — import cancelled.", 5e3);
+            return;
+          }
+          setPendingImport(parsed);
+        } catch (err) {
+          setBlockedMessage("Couldn't read that file — make sure it's a Crew Board backup JSON file.", 5e3);
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = "";
+    }
+    function confirmImport() {
+      const parsed = pendingImport;
+      if (!parsed) return;
+      bumpIdCounterPast(parsed);
+      setResources(parsed.resources);
+      setJobs(parsed.jobs);
+      setAssignments(migrateAssignmentsToDates(parsed.assignments));
+      setNotes(parsed.notes || []);
+      setPendingImport(null);
+    }
+    function cancelImport() {
+      setPendingImport(null);
+    }
+    const [dayOffset, setDayOffset] = (0, import_react2.useState)(0);
     const [selectedResourceId, setSelectedResourceId] = (0, import_react2.useState)(null);
+    const [collapsedSections, setCollapsedSections] = (0, import_react2.useState)({});
+    const toggleSection = (key) => setCollapsedSections((prev) => ({ ...prev, [key]: !prev[key] }));
     const [dragOverCell, setDragOverCell] = (0, import_react2.useState)(null);
     const [invalidDropCell, setInvalidDropCell] = (0, import_react2.useState)(null);
+    const [dragOverJobId, setDragOverJobId] = (0, import_react2.useState)(null);
+    const [dragOverCrewOrderId, setDragOverCrewOrderId] = (0, import_react2.useState)(null);
+    const [editingResourceId, setEditingResourceId] = (0, import_react2.useState)(null);
+    const [resourceDraftName, setResourceDraftName] = (0, import_react2.useState)("");
+    const [editingJobId, setEditingJobId] = (0, import_react2.useState)(null);
+    const [jobDraftName, setJobDraftName] = (0, import_react2.useState)("");
+    const [jobDraftLocation, setJobDraftLocation] = (0, import_react2.useState)("");
+    const [completedJobsOpen, setCompletedJobsOpen] = (0, import_react2.useState)(false);
+    const [editingNoteCell, setEditingNoteCell] = (0, import_react2.useState)(null);
+    const [noteDraftText, setNoteDraftText] = (0, import_react2.useState)("");
+    const [editingNoteId, setEditingNoteId] = (0, import_react2.useState)(null);
     const [copySource, setCopySource] = (0, import_react2.useState)(null);
     const [blockedMessage, setBlockedMessageRaw] = (0, import_react2.useState)(null);
+    const [pendingImport, setPendingImport] = (0, import_react2.useState)(null);
     const blockedTimeout = (0, import_react2.useRef)(null);
+    const topRef = (0, import_react2.useRef)(null);
+    const scrollAppToTop = () => {
+      try {
+        const rootEl = document.getElementById("root");
+        console.log("[scrollAppToTop] invoked", {
+          windowScrollY: window.scrollY,
+          docScrollTop: document.documentElement.scrollTop,
+          bodyScrollTop: document.body.scrollTop,
+          rootScrollTop: rootEl ? rootEl.scrollTop : null,
+          rootScrollHeight: rootEl ? rootEl.scrollHeight : null,
+          rootClientHeight: rootEl ? rootEl.clientHeight : null,
+          docScrollHeight: document.documentElement.scrollHeight,
+          docClientHeight: document.documentElement.clientHeight,
+          bodyScrollHeight: document.body.scrollHeight,
+          innerHeight: window.innerHeight,
+          topRefBoundingTop: topRef.current ? topRef.current.getBoundingClientRect().top : null
+        });
+      } catch (err) {
+        console.error("[scrollAppToTop] measure error", err && err.message);
+      }
+      const doScroll = () => {
+        try {
+          const rootEl = document.getElementById("root");
+          if (rootEl) {
+            rootEl.scrollTo ? rootEl.scrollTo({ top: 0, behavior: "smooth" }) : (rootEl.scrollTop = 0);
+          }
+        } catch (err) {}
+        try {
+          if (topRef.current && topRef.current.scrollIntoView) {
+            topRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        } catch (err) {}
+        try {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          document.documentElement.scrollTop = 0;
+          document.body.scrollTop = 0;
+        } catch (err) {}
+        let el = topRef.current && topRef.current.parentElement;
+        let hops = 0;
+        while (el && hops < 12) {
+          if (el.scrollHeight > el.clientHeight + 2) {
+            try {
+              el.scrollTo ? el.scrollTo({ top: 0, behavior: "smooth" }) : (el.scrollTop = 0);
+            } catch (err) {
+              el.scrollTop = 0;
+            }
+          }
+          el = el.parentElement;
+          hops++;
+        }
+      };
+      doScroll();
+      requestAnimationFrame(doScroll);
+      setTimeout(doScroll, 50);
+      setTimeout(doScroll, 200);
+      setTimeout(() => {
+        try {
+          const rootEl = document.getElementById("root");
+          console.log("[scrollAppToTop] after attempts", {
+            windowScrollY: window.scrollY,
+            docScrollTop: document.documentElement.scrollTop,
+            rootScrollTop: rootEl ? rootEl.scrollTop : null,
+            topRefBoundingTop: topRef.current ? topRef.current.getBoundingClientRect().top : null
+          });
+        } catch (err) {}
+      }, 400);
+    };
     function setBlockedMessage(msg, duration = 2600) {
       setBlockedMessageRaw(msg);
       if (blockedTimeout.current) clearTimeout(blockedTimeout.current);
@@ -13008,19 +13343,25 @@
     const [newResType, setNewResType] = (0, import_react2.useState)("crew");
     const dragResourceId = (0, import_react2.useRef)(null);
     const dragAssignmentId = (0, import_react2.useRef)(null);
-    const weekStart = (0, import_react2.useMemo)(() => {
-      const base = startOfWeek(/* @__PURE__ */ new Date());
-      base.setDate(base.getDate() + weekOffset * 7);
-      return base;
-    }, [weekOffset]);
-    const dayDates = (0, import_react2.useMemo)(
-      () => DAY_LABELS.map((_, i) => {
-        const d = new Date(weekStart);
-        d.setDate(d.getDate() + i);
-        return d;
-      }),
-      [weekStart]
-    );
+    const dragJobId = (0, import_react2.useRef)(null);
+    const dragCrewOrderId = (0, import_react2.useRef)(null);
+    const viewStart = (0, import_react2.useMemo)(() => {
+      const anchor = /* @__PURE__ */ new Date();
+      anchor.setHours(0, 0, 0, 0);
+      if (anchor.getDay() === 0) anchor.setDate(anchor.getDate() + 1);
+      if (dayOffset === 0) return anchor;
+      return addWorkdays(anchor, dayOffset);
+    }, [dayOffset]);
+    const viewDays = (0, import_react2.useMemo)(() => {
+      const days = [];
+      const d = new Date(viewStart);
+      while (days.length < 7) {
+        if (d.getDay() !== 0) days.push(new Date(d));
+        d.setDate(d.getDate() + 1);
+      }
+      return days;
+    }, [viewStart]);
+    const dayDates = viewDays;
     const resourceById = (0, import_react2.useMemo)(() => {
       const m = {};
       resources.forEach((r) => m[r.id] = r);
@@ -13031,7 +13372,7 @@
       assignments.forEach((a) => m[a.id] = a);
       return m;
     }, [assignments]);
-    function effectiveDay(a) {
+    function effectiveDate(a) {
       let cur = a;
       let guard = 0;
       while (cur.parentAssignmentId != null && guard < 10) {
@@ -13040,14 +13381,14 @@
         cur = parent;
         guard += 1;
       }
-      return cur.day;
+      return cur.date;
     }
     const conflictKeys = (0, import_react2.useMemo)(() => {
       const counts = {};
       assignments.forEach((a) => {
-        const day = effectiveDay(a);
-        if (day == null) return;
-        const key = `${a.resourceId}-${day}`;
+        const date = effectiveDate(a);
+        if (date == null) return;
+        const key = `${a.resourceId}-${date}`;
         counts[key] = (counts[key] || 0) + 1;
       });
       const conflicted = /* @__PURE__ */ new Set();
@@ -13056,39 +13397,39 @@
       });
       return conflicted;
     }, [assignments, assignmentById]);
-    function isConflicted(resourceId, day) {
-      return conflictKeys.has(`${resourceId}-${day}`);
+    function isConflicted(resourceId, date) {
+      return conflictKeys.has(`${resourceId}-${date}`);
     }
-    function isResourceAvailable(resourceId, day, excludeAssignmentId) {
-      if (day == null) return true;
+    function isResourceAvailable(resourceId, date, excludeAssignmentId) {
+      if (date == null) return true;
       return !assignments.some((a) => {
         if (a.id === excludeAssignmentId) return false;
         if (a.resourceId !== resourceId) return false;
-        return effectiveDay(a) === day;
+        return effectiveDate(a) === date;
       });
     }
-    function crewAssignmentsFor(jobId, day) {
-      return assignments.filter((a) => a.parentAssignmentId == null && a.jobId === jobId && a.day === day);
+    function crewAssignmentsFor(jobId, date) {
+      return assignments.filter((a) => a.parentAssignmentId == null && a.jobId === jobId && a.date === date);
     }
     function childAssignmentsOf(parentAssignmentId) {
       return assignments.filter((a) => a.parentAssignmentId === parentAssignmentId);
     }
-    function placeCrew(resourceId, jobId, day, movingAssignmentId) {
-      if (!isResourceAvailable(resourceId, day, movingAssignmentId)) {
+    function placeCrew(resourceId, jobId, date, movingAssignmentId) {
+      if (!isResourceAvailable(resourceId, date, movingAssignmentId)) {
         setBlockedMessage(`${resourceById[resourceId]?.name || "That resource"} is already scheduled on this day.`);
         return false;
       }
       setAssignments((prev) => {
         if (movingAssignmentId != null) {
           return prev.map(
-            (a) => a.id === movingAssignmentId ? { ...a, jobId, day, parentAssignmentId: null } : a
+            (a) => a.id === movingAssignmentId ? { ...a, jobId, date, parentAssignmentId: null } : a
           );
         }
         const already = prev.some(
-          (a) => a.parentAssignmentId == null && a.resourceId === resourceId && a.jobId === jobId && a.day === day
+          (a) => a.parentAssignmentId == null && a.resourceId === resourceId && a.jobId === jobId && a.date === date
         );
         if (already) return prev;
-        return [...prev, { id: nextId(), resourceId, jobId, day, parentAssignmentId: null }];
+        return [...prev, { id: nextId(), resourceId, jobId, date, parentAssignmentId: null }];
       });
       return true;
     }
@@ -13099,22 +13440,22 @@
         return false;
       }
       const parent = assignmentById[parentAssignmentId];
-      const targetDay = parent ? effectiveDay(parent) : null;
-      if (!isResourceAvailable(resourceId, targetDay, movingAssignmentId)) {
+      const targetDate = parent ? effectiveDate(parent) : null;
+      if (!isResourceAvailable(resourceId, targetDate, movingAssignmentId)) {
         setBlockedMessage(`${resourceById[resourceId]?.name || "That resource"} is already scheduled on this day.`);
         return false;
       }
       setAssignments((prev) => {
         if (movingAssignmentId != null) {
           return prev.map(
-            (a) => a.id === movingAssignmentId ? { ...a, jobId: null, day: null, parentAssignmentId } : a
+            (a) => a.id === movingAssignmentId ? { ...a, jobId: null, date: null, parentAssignmentId } : a
           );
         }
         const already = prev.some(
           (a) => a.parentAssignmentId === parentAssignmentId && a.resourceId === resourceId
         );
         if (already) return prev;
-        return [...prev, { id: nextId(), resourceId, jobId: null, day: null, parentAssignmentId }];
+        return [...prev, { id: nextId(), resourceId, jobId: null, date: null, parentAssignmentId }];
       });
       return true;
     }
@@ -13129,10 +13470,10 @@
       });
       return all;
     }
-    function copyCrewToTarget(crewAssignment, targetJobId, targetDay) {
-      if (!isResourceAvailable(crewAssignment.resourceId, targetDay, null)) {
+    function copyCrewToTarget(crewAssignment, targetJobId, targetDate) {
+      if (!isResourceAvailable(crewAssignment.resourceId, targetDate, null)) {
         setBlockedMessage(
-          `${resourceById[crewAssignment.resourceId]?.name || "This crew"} is already scheduled on ${DAY_LABELS[targetDay]}.`
+          `${resourceById[crewAssignment.resourceId]?.name || "This crew"} is already scheduled on ${formatShort(dateKeyToDate(targetDate))}.`
         );
         return;
       }
@@ -13142,7 +13483,7 @@
         id: nextId(),
         resourceId: crewAssignment.resourceId,
         jobId: targetJobId,
-        day: targetDay,
+        date: targetDate,
         parentAssignmentId: null
       };
       idMap[crewAssignment.id] = newCrew.id;
@@ -13151,11 +13492,11 @@
       descendants.forEach((orig) => {
         const newParentId = idMap[orig.parentAssignmentId];
         if (newParentId == null) return;
-        if (!isResourceAvailable(orig.resourceId, targetDay, null)) {
+        if (!isResourceAvailable(orig.resourceId, targetDate, null)) {
           skipped.push(resourceById[orig.resourceId]?.name || "an item");
           return;
         }
-        const newA = { id: nextId(), resourceId: orig.resourceId, jobId: null, day: null, parentAssignmentId: newParentId };
+        const newA = { id: nextId(), resourceId: orig.resourceId, jobId: null, date: null, parentAssignmentId: newParentId };
         idMap[orig.id] = newA.id;
         added.push(newA);
       });
@@ -13163,7 +13504,7 @@
       const targetJob = jobs.find((j) => j.id === targetJobId);
       if (skipped.length > 0) {
         setBlockedMessage(
-          `Copied to ${targetJob ? targetJob.name + ", " : ""}${DAY_LABELS[targetDay]}, but skipped (already scheduled that day): ${skipped.join(", ")}.`
+          `Copied to ${targetJob ? targetJob.name + ", " : ""}${formatShort(dateKeyToDate(targetDate))}, but skipped (already scheduled that day): ${skipped.join(", ")}.`
         );
       }
     }
@@ -13183,9 +13524,9 @@
       const r = resourceById[rid];
       return r ? r.type : null;
     }
-    function handleCellDragOver(e, jobId, day) {
+    function handleCellDragOver(e, jobId, date) {
       e.preventDefault();
-      const cellKey = `${jobId}-${day}`;
+      const cellKey = `${jobId}-${date}`;
       const type = draggedType();
       const rid = dragResourceId.current;
       if (LEVEL2_TYPES.includes(type)) {
@@ -13194,15 +13535,15 @@
         return;
       }
       if (EQUIPMENT_TIER_TYPES.includes(type)) {
-        const crews2 = crewAssignmentsFor(jobId, day);
+        const crews2 = crewAssignmentsFor(jobId, date);
         const oos = resourceById[rid]?.outOfService;
-        if (crews2.length !== 1 || oos || !isResourceAvailable(rid, day, dragAssignmentId.current)) {
+        if (crews2.length !== 1 || oos || !isResourceAvailable(rid, date, dragAssignmentId.current)) {
           setInvalidDropCell(cellKey);
           setDragOverCell(null);
           return;
         }
       }
-      if (type === "crew" && !isResourceAvailable(rid, day, dragAssignmentId.current)) {
+      if (type === "crew" && !isResourceAvailable(rid, date, dragAssignmentId.current)) {
         setInvalidDropCell(cellKey);
         setDragOverCell(null);
         return;
@@ -13210,15 +13551,15 @@
       setInvalidDropCell(null);
       setDragOverCell(cellKey);
     }
-    function handleCellDrop(e, jobId, day) {
+    function handleCellDrop(e, jobId, date) {
       e.preventDefault();
       setDragOverCell(null);
       setInvalidDropCell(null);
       const type = draggedType();
       if (type === "crew") {
-        placeCrew(dragResourceId.current, jobId, day, dragAssignmentId.current);
+        placeCrew(dragResourceId.current, jobId, date, dragAssignmentId.current);
       } else if (EQUIPMENT_TIER_TYPES.includes(type)) {
-        const crews2 = crewAssignmentsFor(jobId, day);
+        const crews2 = crewAssignmentsFor(jobId, date);
         if (crews2.length === 1) {
           placeChild(dragResourceId.current, crews2[0].id, dragAssignmentId.current);
         }
@@ -13231,11 +13572,18 @@
       e.stopPropagation();
       setDragOverCell(null);
       setInvalidDropCell(null);
+      if (dragCrewOrderId.current != null) {
+        const draggedId = dragCrewOrderId.current;
+        dragCrewOrderId.current = null;
+        setDragOverCrewOrderId(null);
+        if (draggedId !== crewAssignment.id) moveAssignmentOrder(draggedId, crewAssignment.id);
+        return;
+      }
       const type = draggedType();
       if (EQUIPMENT_TIER_TYPES.includes(type)) {
         placeChild(dragResourceId.current, crewAssignment.id, dragAssignmentId.current);
       } else if (type === "crew") {
-        placeCrew(dragResourceId.current, crewAssignment.jobId, crewAssignment.day, dragAssignmentId.current);
+        placeCrew(dragResourceId.current, crewAssignment.jobId, crewAssignment.date, dragAssignmentId.current);
       } else if (LEVEL2_TYPES.includes(type)) {
         const equip = childAssignmentsOf(crewAssignment.id);
         if (equip.length === 1) placeChild(dragResourceId.current, equip[0].id, dragAssignmentId.current);
@@ -13265,9 +13613,9 @@
       dragResourceId.current = null;
       dragAssignmentId.current = null;
     }
-    function handleCellClick(jobId, day) {
+    function handleCellClick(jobId, date) {
       if (copySource != null) {
-        copyCrewToTarget(copySource, jobId, day);
+        copyCrewToTarget(copySource, jobId, date);
         setCopySource(null);
         return;
       }
@@ -13275,9 +13623,9 @@
       const r = resourceById[selectedResourceId];
       if (!r) return;
       if (r.type === "crew") {
-        if (placeCrew(selectedResourceId, jobId, day, null)) setSelectedResourceId(null);
+        if (placeCrew(selectedResourceId, jobId, date, null)) setSelectedResourceId(null);
       } else if (EQUIPMENT_TIER_TYPES.includes(r.type)) {
-        const crews2 = crewAssignmentsFor(jobId, day);
+        const crews2 = crewAssignmentsFor(jobId, date);
         if (crews2.length === 1) {
           if (placeChild(selectedResourceId, crews2[0].id, null)) setSelectedResourceId(null);
         }
@@ -13335,6 +13683,107 @@
         const rootIds = prev.filter((a) => a.parentAssignmentId == null && a.jobId === jobId).map((a) => a.id);
         return removeWithDescendants(prev, rootIds);
       });
+      setNotes((prev) => prev.filter((n) => n.jobId !== jobId));
+    }
+    function completeJob(jobId) {
+      setJobs((prev) => prev.map((j) => j.id === jobId ? { ...j, status: "completed", completedAt: (/* @__PURE__ */ new Date()).toISOString() } : j));
+    }
+    function reopenJob(jobId) {
+      setJobs((prev) => prev.map((j) => j.id === jobId ? { ...j, status: "active" } : j));
+    }
+    function startEditJob(job) {
+      setEditingJobId(job.id);
+      setJobDraftName(job.name);
+      setJobDraftLocation(job.location === "—" ? "" : job.location);
+    }
+    function cancelEditJob() {
+      setEditingJobId(null);
+      setJobDraftName("");
+      setJobDraftLocation("");
+    }
+    function saveJobEdit() {
+      const name = jobDraftName.trim();
+      if (!name) {
+        cancelEditJob();
+        return;
+      }
+      const location = jobDraftLocation.trim() || "—";
+      const jobId = editingJobId;
+      setJobs((prev) => prev.map((j) => j.id === jobId ? { ...j, name, location } : j));
+      cancelEditJob();
+    }
+    function moveAssignmentOrder(draggedId, targetId) {
+      if (draggedId === targetId) return;
+      setAssignments((prev) => {
+        const from = prev.findIndex((a) => a.id === draggedId);
+        const to = prev.findIndex((a) => a.id === targetId);
+        if (from === -1 || to === -1) return prev;
+        const next = [...prev];
+        const [moved] = next.splice(from, 1);
+        const adjustedTo = from < to ? to - 1 : to;
+        next.splice(adjustedTo, 0, moved);
+        return next;
+      });
+    }
+    function moveJob(draggedId, targetId) {
+      if (draggedId === targetId) return;
+      setJobs((prev) => {
+        const from = prev.findIndex((j) => j.id === draggedId);
+        const to = prev.findIndex((j) => j.id === targetId);
+        if (from === -1 || to === -1) return prev;
+        const next = [...prev];
+        const [moved] = next.splice(from, 1);
+        next.splice(to, 0, moved);
+        return next;
+      });
+    }
+    function handleJobDragStart(e, jobId) {
+      dragJobId.current = jobId;
+      e.dataTransfer.effectAllowed = "move";
+    }
+    function handleJobDragOver(e, jobId) {
+      if (dragJobId.current == null) return;
+      e.preventDefault();
+      if (dragOverJobId !== jobId) setDragOverJobId(jobId);
+    }
+    function handleJobDrop(e, jobId) {
+      e.preventDefault();
+      setDragOverJobId(null);
+      if (dragJobId.current != null && dragJobId.current !== jobId) {
+        moveJob(dragJobId.current, jobId);
+      }
+      dragJobId.current = null;
+    }
+    function openNoteEditor(jobId, date) {
+      setEditingNoteCell(`${jobId}-${date}`);
+      setEditingNoteId(null);
+      setNoteDraftText("");
+    }
+    function openNoteEdit(note) {
+      setEditingNoteCell(`${note.jobId}-${note.date}`);
+      setEditingNoteId(note.id);
+      setNoteDraftText(note.text);
+    }
+    function cancelNoteEdit() {
+      setEditingNoteCell(null);
+      setEditingNoteId(null);
+      setNoteDraftText("");
+    }
+    function saveNoteDraft(jobId, date) {
+      const text = noteDraftText.trim();
+      if (!text) {
+        cancelNoteEdit();
+        return;
+      }
+      if (editingNoteId != null) {
+        setNotes((prev) => prev.map((n) => n.id === editingNoteId ? { ...n, text } : n));
+      } else {
+        setNotes((prev) => [...prev, { id: nextId(), jobId, date, text }]);
+      }
+      cancelNoteEdit();
+    }
+    function removeNote(noteId) {
+      setNotes((prev) => prev.filter((n) => n.id !== noteId));
     }
     function removeResource(resourceId) {
       setResources((prev) => prev.filter((r) => r.id !== resourceId));
@@ -13343,14 +13792,32 @@
         return removeWithDescendants(prev, rootIds);
       });
     }
+    function startEditResource(r) {
+      setEditingResourceId(r.id);
+      setResourceDraftName(r.name);
+    }
+    function cancelEditResource() {
+      setEditingResourceId(null);
+      setResourceDraftName("");
+    }
+    function saveResourceEdit() {
+      const name = resourceDraftName.trim();
+      if (!name) {
+        cancelEditResource();
+        return;
+      }
+      const resourceId = editingResourceId;
+      setResources((prev) => prev.map((r) => r.id === resourceId ? { ...r, name } : r));
+      cancelEditResource();
+    }
     function toggleOutOfService(resourceId) {
       const res = resourceById[resourceId];
       const turningOn = res && !res.outOfService;
       if (turningOn) {
-        const activeDays = assignments.filter((a) => a.resourceId === resourceId).map((a) => effectiveDay(a)).filter((d) => d != null);
-        const uniqueDays = [...new Set(activeDays)].sort((a, b) => a - b);
+        const activeDays = assignments.filter((a) => a.resourceId === resourceId).map((a) => effectiveDate(a)).filter((d) => d != null);
+        const uniqueDays = [...new Set(activeDays)].sort();
         if (uniqueDays.length > 0) {
-          const dayList = uniqueDays.map((d) => DAY_LABELS[d]).join(", ");
+          const dayList = uniqueDays.map((d) => formatShort(dateKeyToDate(d))).join(", ");
           setBlockedMessage(
             `${res.name} marked out of service \u2014 it's still on the board for ${dayList}. Those bookings are now flagged (grayed out, locked from moving); remove or swap them when you get a chance.`,
             5e3
@@ -13467,7 +13934,10 @@
         margin: "14px 4px 8px",
         display: "flex",
         alignItems: "center",
-        gap: "6px"
+        gap: "6px",
+        cursor: "pointer",
+        userSelect: "none",
+        justifyContent: "space-between"
       },
       poolArea: {
         minHeight: "60px",
@@ -13482,7 +13952,7 @@
         width: "100%",
         borderCollapse: "separate",
         borderSpacing: "6px",
-        minWidth: "800px"
+        tableLayout: "fixed"
       },
       dayHeaderCell: {
         fontFamily: "'Oswald', sans-serif",
@@ -13491,7 +13961,8 @@
         textTransform: "uppercase",
         color: "#9CA3AC",
         textAlign: "center",
-        paddingBottom: "6px"
+        paddingBottom: "6px",
+        width: `${91.5 / 7}%`
       },
       dayDate: {
         fontFamily: "'JetBrains Mono', monospace",
@@ -13503,27 +13974,35 @@
       jobCell: {
         background: "#1E2126",
         borderRadius: "8px",
-        padding: "10px 12px",
-        minWidth: "150px",
+        padding: "8px 8px",
+        width: "8.5%",
         verticalAlign: "top"
       },
       jobName: {
         fontFamily: "'Oswald', sans-serif",
-        fontSize: "14px",
+        fontSize: "11px",
         fontWeight: 500,
         color: "#F5F3EC",
-        letterSpacing: "0.02em"
+        letterSpacing: "0.02em",
+        whiteSpace: "normal",
+        overflowWrap: "break-word",
+        wordBreak: "break-word",
+        lineHeight: 1.2
       },
       jobLoc: {
         fontFamily: "'JetBrains Mono', monospace",
-        fontSize: "11px",
-        color: "#6C7178"
+        fontSize: "9px",
+        color: "#6C7178",
+        whiteSpace: "normal",
+        overflowWrap: "break-word",
+        wordBreak: "break-word",
+        lineHeight: 1.2
       },
       dayCell: {
         background: "#1B1E23",
         border: "1px solid #2A2E34",
         borderRadius: "8px",
-        minWidth: "124px",
+        width: `${91.5 / 7}%`,
         minHeight: "72px",
         verticalAlign: "top",
         padding: "6px",
@@ -13547,30 +14026,150 @@
         width: "100%",
         marginBottom: "8px",
         boxSizing: "border-box"
+      },
+      resourceGroup: {
+        display: "flex",
+        flexDirection: "column",
+        gap: "4px",
+        background: "rgba(255,255,255,0.02)",
+        border: "1px solid #262A30",
+        borderRadius: "6px",
+        padding: "5px",
+        marginBottom: "5px"
+      },
+      noteCard: {
+        display: "flex",
+        alignItems: "flex-start",
+        gap: "5px",
+        background: "#332B14",
+        color: "#E8C97A",
+        border: "1px dashed #6B5A22",
+        borderRadius: "6px",
+        padding: "5px 6px",
+        fontSize: "11px",
+        lineHeight: 1.3,
+        marginBottom: "5px",
+        cursor: "pointer"
+      },
+      noteInput: {
+        background: "#15171B",
+        border: "1px solid #6B5A22",
+        borderRadius: "6px",
+        color: "#EDEBE4",
+        padding: "6px 8px",
+        fontSize: "11px",
+        fontFamily: "'Inter', sans-serif",
+        width: "100%",
+        minHeight: "50px",
+        resize: "vertical",
+        boxSizing: "border-box"
+      },
+      addNoteBtn: {
+        display: "flex",
+        alignItems: "center",
+        gap: "4px",
+        background: "transparent",
+        border: "1px dashed #3E3A2A",
+        borderRadius: "6px",
+        color: "#8A7A45",
+        cursor: "pointer",
+        fontSize: "10px",
+        padding: "3px 6px",
+        width: "100%",
+        justifyContent: "center"
       }
     };
     function ResourceIcon({ type, size = 13 }) {
       if (type === "crew") return /* @__PURE__ */ import_react.default.createElement(Users, { size, "aria-hidden": "true" });
-      if (type === "equipment") return /* @__PURE__ */ import_react.default.createElement(Wrench, { size, "aria-hidden": "true" });
-      if (type === "dumptruck") return /* @__PURE__ */ import_react.default.createElement(Truck, { size, "aria-hidden": "true" });
+      if (type === "equipment") return /* @__PURE__ */ import_react.default.createElement(Excavator, { size, "aria-hidden": "true" });
+      if (type === "miniexcavator") return /* @__PURE__ */ import_react.default.createElement(Excavator, { size, "aria-hidden": "true" });
+      if (type === "dumptruck") return /* @__PURE__ */ import_react.default.createElement(DumpTruck, { size, "aria-hidden": "true" });
+      if (type === "vactruck") return /* @__PURE__ */ import_react.default.createElement(Truck, { size, "aria-hidden": "true" });
+      if (type === "smalldump") return /* @__PURE__ */ import_react.default.createElement(Truck, { size, "aria-hidden": "true" });
+      if (type === "rentaltruck") return /* @__PURE__ */ import_react.default.createElement(Truck, { size, "aria-hidden": "true" });
+      if (type === "skidloader") return /* @__PURE__ */ import_react.default.createElement(Wrench, { size, "aria-hidden": "true" });
+      if (type === "cranelowboy") return /* @__PURE__ */ import_react.default.createElement(Truck, { size, "aria-hidden": "true" });
       if (type === "driver") return /* @__PURE__ */ import_react.default.createElement(User, { size, "aria-hidden": "true" });
       if (type === "operator") return /* @__PURE__ */ import_react.default.createElement(UserCog, { size, "aria-hidden": "true" });
       return /* @__PURE__ */ import_react.default.createElement(Link2, { size, "aria-hidden": "true" });
     }
-    function Chip({ resource, onDragStart, onRemove, onCopy, onToggleOOS, conflicted, dense }) {
+    function Chip({ resource, onDragStart, onRemove, onCopy, onToggleOOS, onEdit, editing, draftValue, onDraftChange, onSaveEdit, onCancelEdit, conflicted, dense, selectable = true, printLevel }) {
       const color = TYPE_COLORS[resource.type] || TYPE_COLORS.crew;
       const scale = TYPE_SCALE[resource.type] || TYPE_SCALE.crew;
       const selected = selectedResourceId === resource.id;
       const oos = !!resource.outOfService;
+      if (editing) {
+        return /* @__PURE__ */ import_react.default.createElement(
+          "div",
+          {
+            className: "no-print",
+            style: {
+              display: "flex",
+              alignItems: "center",
+              gap: "4px",
+              background: "#1E2126",
+              borderRadius: "6px",
+              padding: dense ? scale.densePad : scale.pad,
+              marginBottom: dense ? "5px" : "8px",
+              boxShadow: "0 0 0 2px #FF6A1F"
+            }
+          },
+          /* @__PURE__ */ import_react.default.createElement("input", {
+            autoFocus: true,
+            value: draftValue,
+            onChange: (e) => onDraftChange(e.target.value),
+            onClick: (e) => e.stopPropagation(),
+            onKeyDown: (e) => {
+              e.stopPropagation();
+              if (e.key === "Enter") onSaveEdit();
+              if (e.key === "Escape") onCancelEdit();
+            },
+            style: {
+              flex: 1,
+              minWidth: 0,
+              background: "#0E0F12",
+              color: "#EDEBE4",
+              border: "1px solid #3A3F46",
+              borderRadius: "4px",
+              padding: "3px 6px",
+              fontSize: `${dense ? scale.denseFont : scale.font}px`,
+              fontFamily: "inherit"
+            }
+          }),
+          /* @__PURE__ */ import_react.default.createElement(
+            "button",
+            {
+              onClick: (e) => { e.stopPropagation(); onSaveEdit(); },
+              style: { background: "rgba(255,255,255,0.08)", border: "none", borderRadius: "4px", color: "#8FD19E", cursor: "pointer", display: "flex", padding: "3px" },
+              "aria-label": "Save name"
+            },
+            /* @__PURE__ */ import_react.default.createElement(Check, { size: 12 })
+          ),
+          /* @__PURE__ */ import_react.default.createElement(
+            "button",
+            {
+              onClick: (e) => { e.stopPropagation(); onCancelEdit(); },
+              style: { background: "rgba(255,255,255,0.08)", border: "none", borderRadius: "4px", color: "#E5A5A5", cursor: "pointer", display: "flex", padding: "3px" },
+              "aria-label": "Cancel edit"
+            },
+            /* @__PURE__ */ import_react.default.createElement(X, { size: 12 })
+          )
+        );
+      }
       return /* @__PURE__ */ import_react.default.createElement(
         "div",
         {
           draggable: !oos,
           onDragStart: oos ? (e) => e.preventDefault() : onDragStart,
           onClick: (e) => {
+            if (!selectable) return;
             e.stopPropagation();
-            if (onRemove || oos) return;
-            setSelectedResourceId(selected ? null : resource.id);
+            if (oos) return;
+            const willSelect = !selected;
+            setSelectedResourceId(willSelect ? resource.id : null);
+            if (willSelect) {
+              scrollAppToTop();
+            }
           },
           style: {
             display: "flex",
@@ -13591,10 +14190,11 @@
             userSelect: "none",
             opacity: oos ? 0.8 : 1
           },
-          title: oos ? `${resource.name} \u2014 out of service` : resource.name
+          title: oos ? `${resource.name} \u2014 out of service` : resource.name,
+          className: printLevel ? `crew-board-chip crew-board-chip-${printLevel}` : "crew-board-chip"
         },
         /* @__PURE__ */ import_react.default.createElement(ResourceIcon, { type: resource.type, size: scale.icon }),
-        /* @__PURE__ */ import_react.default.createElement("span", { style: { flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", textDecoration: oos ? "line-through" : "none" } }, resource.name),
+        /* @__PURE__ */ import_react.default.createElement("span", { style: { flex: 1, minWidth: 0, whiteSpace: "normal", overflowWrap: "break-word", wordBreak: "break-word", lineHeight: 1.25, textDecoration: oos ? "line-through" : "none" }, className: "crew-board-chip-text" }, resource.name),
         oos && /* @__PURE__ */ import_react.default.createElement("span", { style: { fontSize: "9px", fontWeight: 700, letterSpacing: "0.04em", color: "#E5484D" } }, "OOS"),
         conflicted && /* @__PURE__ */ import_react.default.createElement(AlertTriangle, { size: 13, color: "#7A1418", "aria-label": "Double-booked" }),
         onToggleOOS && /* @__PURE__ */ import_react.default.createElement(
@@ -13614,9 +14214,32 @@
               padding: "2px"
             },
             "aria-label": oos ? `Mark ${resource.name} back in service` : `Mark ${resource.name} out of service`,
-            title: oos ? "Mark back in service" : "Mark out of service"
+            title: oos ? "Mark back in service" : "Mark out of service",
+            className: "no-print"
           },
           /* @__PURE__ */ import_react.default.createElement(Ban, { size: 11 })
+        ),
+        onEdit && /* @__PURE__ */ import_react.default.createElement(
+          "button",
+          {
+            onClick: (e) => {
+              e.stopPropagation();
+              onEdit();
+            },
+            style: {
+              background: "rgba(0,0,0,0.15)",
+              border: "none",
+              borderRadius: "4px",
+              color: color.text,
+              cursor: "pointer",
+              display: "flex",
+              padding: "2px"
+            },
+            "aria-label": `Rename ${resource.name}`,
+            title: "Rename",
+            className: "no-print"
+          },
+          /* @__PURE__ */ import_react.default.createElement(Pencil, { size: 11 })
         ),
         onCopy && /* @__PURE__ */ import_react.default.createElement(
           "button",
@@ -13635,7 +14258,8 @@
               padding: "2px"
             },
             "aria-label": `Copy ${resource.name} to the next day`,
-            title: "Copy to next day"
+            title: "Copy to next day",
+            className: "no-print"
           },
           /* @__PURE__ */ import_react.default.createElement(Copy, { size: 11 })
         ),
@@ -13655,7 +14279,8 @@
               display: "flex",
               padding: "2px"
             },
-            "aria-label": `Remove ${resource.name} from this slot`
+            "aria-label": `Remove ${resource.name} from this slot`,
+            className: "no-print"
           },
           /* @__PURE__ */ import_react.default.createElement(X, { size: 11 })
         )
@@ -13671,29 +14296,109 @@
           },
           onDrop: onDropHandler,
           onClick: onClickHandler,
-          style: { marginLeft: "10px", borderLeft: "2px solid #33383E", paddingLeft: "8px", marginTop: "2px" }
+          style: { marginLeft: "10px", borderLeft: "2px solid #33383E", paddingLeft: "8px", marginTop: "2px" }, className: "crew-board-nest-line"
         },
         children
       );
     }
     const crews = resources.filter((r) => r.type === "crew");
     const equipmentPool = resources.filter((r) => r.type === "equipment");
+    const miniExcavatorPool = resources.filter((r) => r.type === "miniexcavator");
     const dumpTruckPool = resources.filter((r) => r.type === "dumptruck");
+    const vacTruckPool = resources.filter((r) => r.type === "vactruck");
+    const smallDumpPool = resources.filter((r) => r.type === "smalldump");
+    const rentalTruckPool = resources.filter((r) => r.type === "rentaltruck");
+    const skidLoaderPool = resources.filter((r) => r.type === "skidloader");
+    const craneLowBoyPool = resources.filter((r) => r.type === "cranelowboy");
     const attachmentPool = resources.filter((r) => r.type === "attachment");
     const driverPool = resources.filter((r) => r.type === "driver");
     const operatorPool = resources.filter((r) => r.type === "operator");
-    return /* @__PURE__ */ import_react.default.createElement("div", { style: styles.root, className: "crew-board-print-root" }, /* @__PURE__ */ import_react.default.createElement("style", null, `
+    const viewDayKeys = viewDays.map((d) => toDateKey(d));
+    const activeJobs = jobs.filter((j) => j.status !== "completed");
+    const completedJobs = jobs.filter((j) => j.status === "completed");
+    const sortedJobs = activeJobs.map((job, idx) => {
+      let firstActiveIdx = viewDayKeys.findIndex((day) => crewAssignmentsFor(job.id, day).length > 0);
+      if (firstActiveIdx === -1) firstActiveIdx = Infinity;
+      return { job, idx, firstActiveIdx };
+    }).sort((a, b) => a.firstActiveIdx - b.firstActiveIdx || a.idx - b.idx).map((entry) => entry.job);
+    const completedJobsPanel = completedJobs.length === 0 ? null : /* @__PURE__ */ import_react.default.createElement(
+      "div",
+      { style: { borderTop: "1px solid #2C3036", padding: "10px 20px" }, className: "no-print" },
+      /* @__PURE__ */ import_react.default.createElement(
+        "div",
+        { style: { display: "flex", alignItems: "center", gap: "6px", cursor: "pointer", fontSize: "12px", color: "#9AA0A8", userSelect: "none" }, onClick: () => setCompletedJobsOpen((v) => !v) },
+        /* @__PURE__ */ import_react.default.createElement(ChevronRight, { size: 12, style: { transform: completedJobsOpen ? "rotate(90deg)" : "none", transition: "transform 0.15s" } }),
+        `Completed Jobs (${completedJobs.length})`
+      ),
+      completedJobsOpen && /* @__PURE__ */ import_react.default.createElement(
+        "div",
+        { style: { marginTop: "8px", display: "flex", flexDirection: "column", gap: "6px" } },
+        completedJobs.map((job) => /* @__PURE__ */ import_react.default.createElement(
+          "div",
+          { key: job.id, style: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", background: "#1B1D21", borderRadius: "6px", padding: "8px 12px" } },
+          /* @__PURE__ */ import_react.default.createElement(
+            "div",
+            null,
+            /* @__PURE__ */ import_react.default.createElement("div", { style: { fontSize: "13px", fontWeight: 600, color: "#B7BCC3" } }, job.name),
+            /* @__PURE__ */ import_react.default.createElement("div", { style: { fontSize: "11px", color: "#5F656E" } }, job.location, job.completedAt ? ` — completed ${formatSavedAt(job.completedAt)}` : "")
+          ),
+          /* @__PURE__ */ import_react.default.createElement("button", { onClick: () => reopenJob(job.id), style: { ...styles.addBtnGhost, padding: "4px 10px", fontSize: "12px" } }, "Reopen")
+        ))
+      )
+    );
+    const importConfirmModal = !pendingImport ? null : /* @__PURE__ */ import_react.default.createElement(
+      "div",
+      {
+        className: "no-print",
+        style: { position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1e3 },
+        onMouseDown: (e) => { if (e.target === e.currentTarget) cancelImport(); }
+      },
+      /* @__PURE__ */ import_react.default.createElement(
+        "div",
+        { style: { background: "#1B1D21", border: "1px solid #2C3036", borderRadius: "10px", padding: "22px", maxWidth: "380px", boxShadow: "0 12px 40px rgba(0,0,0,0.5)" } },
+        /* @__PURE__ */ import_react.default.createElement("div", { style: { fontSize: "15px", fontWeight: 600, color: "#E5E7EB", marginBottom: "10px", fontFamily: "'Inter', sans-serif" } }, "Import this backup?"),
+        /* @__PURE__ */ import_react.default.createElement("div", { style: { fontSize: "13px", color: "#9AA0A8", lineHeight: 1.4, marginBottom: "18px", fontFamily: "'Inter', sans-serif" } }, "It will replace everything currently on this board on this computer — resources, jobs, the schedule, and notes."),
+        /* @__PURE__ */ import_react.default.createElement(
+          "div",
+          { style: { display: "flex", justifyContent: "flex-end", gap: "8px" } },
+          /* @__PURE__ */ import_react.default.createElement("button", { onClick: cancelImport, style: styles.addBtnGhost }, "Cancel"),
+          /* @__PURE__ */ import_react.default.createElement("button", { onClick: confirmImport, style: { ...styles.addBtn, background: "#E5484D", borderColor: "#E5484D" } }, "Import & Replace")
+        )
+      )
+    );
+    return /* @__PURE__ */ import_react.default.createElement("div", { ref: topRef, style: styles.root, className: "crew-board-print-root" }, /* @__PURE__ */ import_react.default.createElement("style", null, `
         @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
         @media print {
+          @page {
+            size: landscape;
+            margin: 10mm;
+          }
+          html, body, #root {
+            height: auto !important;
+            overflow: visible !important;
+          }
           .no-print { display: none !important; }
+          .crew-board-outer {
+            max-width: none !important;
+            padding: 0 !important;
+          }
+          * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+          }
           .crew-board-print-root {
             background: #ffffff !important;
             color: #111111 !important;
             border: none !important;
             min-height: 0 !important;
+            overflow: visible !important;
           }
           .crew-board-print-root * {
             box-shadow: none !important;
+          }
+          .crew-board-grid-area {
+            overflow: visible !important;
           }
           .print-header {
             background: #ffffff !important;
@@ -13705,20 +14410,137 @@
           .print-week-label {
             color: #111111 !important;
           }
-          .print-cell {
+          .print-subtext {
+            color: #555555 !important;
+          }
+          .crew-board-print-root, .crew-board-print-root * {
+            border-radius: 0 !important;
+            box-shadow: none !important;
+          }
+          table {
+            border-collapse: collapse !important;
+            border-spacing: 0 !important;
+            table-layout: auto !important;
+            width: auto !important;
+          }
+          th, .print-cell {
+            border: 1px solid #000000 !important;
+            padding: 6px 8px !important;
+            vertical-align: top !important;
+            width: auto !important;
+            white-space: nowrap !important;
             background: #ffffff !important;
-            border: 1px solid #999999 !important;
+            color: #000000 !important;
+          }
+          th {
+            background: #e8e8e8 !important;
+            font-size: 12px !important;
+            font-family: Arial, Helvetica, sans-serif !important;
+            font-weight: 700 !important;
+            letter-spacing: normal !important;
+            text-transform: none !important;
+            color: #000000 !important;
+          }
+          .print-subtext {
+            color: #333333 !important;
+          }
+          tr {
+            break-inside: avoid;
+            page-break-inside: avoid;
+          }
+          .crew-board-nest-line {
+            border-left: none !important;
+            margin-top: 0 !important;
+          }
+          .crew-board-parent-item {
+            margin-bottom: 0 !important;
+          }
+          .crew-board-chip-parent {
+            font-size: 14px !important;
+            font-weight: 700 !important;
+          }
+          .crew-board-chip-parent svg {
+            width: 14px !important;
+            height: 14px !important;
+          }
+          .crew-board-chip svg {
+            width: 12px !important;
+            height: 12px !important;
+            flex-shrink: 0;
+            stroke: currentColor !important;
+          }
+          .crew-board-chip {
+            display: flex !important;
+            align-items: center !important;
+            gap: 5px !important;
+            border: none !important;
+            border-radius: 4px !important;
+            padding: 2px 5px !important;
+            margin-bottom: 3px !important;
+            font-family: Arial, Helvetica, sans-serif !important;
+            font-size: 11px !important;
+            font-weight: 600 !important;
+          }
+          .crew-board-chip-text {
+            white-space: nowrap !important;
+            overflow: visible !important;
+            text-overflow: clip !important;
+            line-height: 1.3 !important;
+          }
+          .print-title {
+            font-size: 15px !important;
+            font-family: Arial, Helvetica, sans-serif !important;
+          }
+          .crew-board-note-card {
+            display: flex !important;
+            align-items: flex-start !important;
+            gap: 4px !important;
+            background: #ffffff !important;
+            color: #000000 !important;
+            border: 1px dashed #666666 !important;
+            border-radius: 0 !important;
+            padding: 3px 4px !important;
+            margin-bottom: 3px !important;
+            font-family: Arial, Helvetica, sans-serif !important;
+            font-size: 10px !important;
+          }
+          .crew-board-note-icon {
+            color: #000000 !important;
+            stroke: #000000 !important;
+          }
+          .crew-board-note-text {
+            white-space: normal !important;
+            color: #000000 !important;
+          }
+          .crew-board-resource-group {
+            background: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            margin-bottom: 2px !important;
           }
         }
-      `), /* @__PURE__ */ import_react.default.createElement("div", { style: styles.header, className: "print-header" }, /* @__PURE__ */ import_react.default.createElement("div", { style: styles.title, className: "print-title" }, /* @__PURE__ */ import_react.default.createElement(HardHat, { size: 22, color: "#FF6A1F", "aria-hidden": "true" }), "Crew Board"), /* @__PURE__ */ import_react.default.createElement("div", { style: styles.weekNav }, /* @__PURE__ */ import_react.default.createElement("button", { style: styles.navBtn, className: "no-print", onClick: () => setWeekOffset((w) => w - 1), "aria-label": "Previous week" }, /* @__PURE__ */ import_react.default.createElement(ChevronLeft, { size: 16 })), /* @__PURE__ */ import_react.default.createElement("span", { style: styles.weekLabel, className: "print-week-label" }, formatShort(dayDates[0]), " \u2013 ", formatShort(dayDates[5])), /* @__PURE__ */ import_react.default.createElement("button", { style: styles.navBtn, className: "no-print", onClick: () => setWeekOffset((w) => w + 1), "aria-label": "Next week" }, /* @__PURE__ */ import_react.default.createElement(ChevronRight, { size: 16 })), weekOffset !== 0 && /* @__PURE__ */ import_react.default.createElement(
+      `), /* @__PURE__ */ import_react.default.createElement("div", { style: styles.header, className: "print-header" }, /* @__PURE__ */ import_react.default.createElement("div", { style: styles.title, className: "print-title" }, /* @__PURE__ */ import_react.default.createElement(HardHat, { size: 22, color: "#FF6A1F", "aria-hidden": "true" }), "Crew Board"), /* @__PURE__ */ import_react.default.createElement("div", { style: styles.weekNav }, /* @__PURE__ */ import_react.default.createElement("button", { style: styles.navBtn, className: "no-print", onClick: () => setDayOffset((o) => o - 1), "aria-label": "Previous day" }, /* @__PURE__ */ import_react.default.createElement(ChevronLeft, { size: 16 })), /* @__PURE__ */ import_react.default.createElement("span", { style: styles.weekLabel, className: "print-week-label" }, formatShort(dayDates[0]), " \u2013 ", formatShort(dayDates[dayDates.length - 1])), /* @__PURE__ */ import_react.default.createElement("button", { style: styles.navBtn, className: "no-print", onClick: () => setDayOffset((o) => o + 1), "aria-label": "Next day" }, /* @__PURE__ */ import_react.default.createElement(ChevronRight, { size: 16 })), dayOffset !== 0 && /* @__PURE__ */ import_react.default.createElement(
       "button",
       {
         style: { ...styles.navBtn, fontSize: "11px", color: "#FF6A1F" },
         className: "no-print",
-        onClick: () => setWeekOffset(0)
+        onClick: () => setDayOffset(0)
       },
       "Today"
-    )), /* @__PURE__ */ import_react.default.createElement("div", { style: { display: "flex", gap: "8px" }, className: "no-print" }, /* @__PURE__ */ import_react.default.createElement("button", { style: styles.addBtnGhost, onClick: () => window.print() }, /* @__PURE__ */ import_react.default.createElement(Printer, { size: 14 }), " Print"), /* @__PURE__ */ import_react.default.createElement("button", { style: styles.addBtnGhost, onClick: () => setAddResourceOpen((v) => !v) }, /* @__PURE__ */ import_react.default.createElement(Plus, { size: 14 }), " Resource"), /* @__PURE__ */ import_react.default.createElement("button", { style: styles.addBtn, onClick: () => setAddJobOpen((v) => !v) }, /* @__PURE__ */ import_react.default.createElement(Plus, { size: 14 }), " Job"))), copySource && /* @__PURE__ */ import_react.default.createElement(
+    )), /* @__PURE__ */ import_react.default.createElement("div", { style: { display: "flex", alignItems: "center", gap: "10px" }, className: "no-print" },
+      /* @__PURE__ */ import_react.default.createElement("span", { style: { fontSize: "11px", color: "#7C828C" }, title: "When this computer last saved a change locally" }, "Saved ", formatSavedAt(lastSavedAt)),
+      /* @__PURE__ */ import_react.default.createElement("div", { style: { display: "flex", gap: "8px" } },
+        /* @__PURE__ */ import_react.default.createElement("input", { ref: importInputRef, type: "file", accept: "application/json", style: { display: "none" }, onChange: handleImportFile }),
+        /* @__PURE__ */ import_react.default.createElement("input", { ref: bridgeImportInputRef, type: "file", accept: "application/json", style: { display: "none" }, onChange: handleBridgeImportFile }),
+        /* @__PURE__ */ import_react.default.createElement("button", { style: styles.addBtnGhost, onClick: exportBoardData, title: "Save a backup file of everything on this board" }, /* @__PURE__ */ import_react.default.createElement(Download, { size: 14 }), " Export"),
+        /* @__PURE__ */ import_react.default.createElement("button", { style: styles.addBtnGhost, onClick: triggerImport, title: "Load a backup file, replacing everything on this computer" }, /* @__PURE__ */ import_react.default.createElement(Upload, { size: 14 }), " Import"),
+        /* @__PURE__ */ import_react.default.createElement("button", { style: styles.addBtnGhost, onClick: exportJobsForProjectHub, title: "Export jobs as a file you can import into Project Hub" }, /* @__PURE__ */ import_react.default.createElement(Download, { size: 14 }), " To Project Hub"),
+        /* @__PURE__ */ import_react.default.createElement("button", { style: styles.addBtnGhost, onClick: triggerBridgeImport, title: "Import a jobs file exported from Project Hub — adds/updates jobs, doesn't replace anything" }, /* @__PURE__ */ import_react.default.createElement(Upload, { size: 14 }), " From Project Hub"),
+        /* @__PURE__ */ import_react.default.createElement("button", { style: styles.addBtnGhost, onClick: () => window.print() }, /* @__PURE__ */ import_react.default.createElement(Printer, { size: 14 }), " Print"),
+        /* @__PURE__ */ import_react.default.createElement("button", { style: styles.addBtnGhost, onClick: () => setAddResourceOpen((v) => !v) }, /* @__PURE__ */ import_react.default.createElement(Plus, { size: 14 }), " Resource"),
+        /* @__PURE__ */ import_react.default.createElement("button", { style: styles.addBtn, onClick: () => setAddJobOpen((v) => !v) }, /* @__PURE__ */ import_react.default.createElement(Plus, { size: 14 }), " Job")
+      )
+    )), copySource && /* @__PURE__ */ import_react.default.createElement(
       "div",
       {
         className: "no-print",
@@ -13790,7 +14612,7 @@
         value: newResName,
         onChange: (e) => setNewResName(e.target.value)
       }
-    ), /* @__PURE__ */ import_react.default.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "14px", marginBottom: "8px", fontSize: "13px" } }, ["crew", "equipment", "dumptruck", "attachment", "driver", "operator"].map((t) => /* @__PURE__ */ import_react.default.createElement("label", { key: t, style: { display: "flex", alignItems: "center", gap: "5px", cursor: "pointer" } }, /* @__PURE__ */ import_react.default.createElement("input", { type: "radio", checked: newResType === t, onChange: () => setNewResType(t) }), TYPE_LABELS[t]))), (() => {
+    ), /* @__PURE__ */ import_react.default.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "14px", marginBottom: "8px", fontSize: "13px" } }, ["crew", "equipment", "miniexcavator", "dumptruck", "smalldump", "vactruck", "rentaltruck", "skidloader", "cranelowboy", "attachment", "driver", "operator"].map((t) => /* @__PURE__ */ import_react.default.createElement("label", { key: t, style: { display: "flex", alignItems: "center", gap: "5px", cursor: "pointer" } }, /* @__PURE__ */ import_react.default.createElement("input", { type: "radio", checked: newResType === t, onChange: () => setNewResType(t) }), TYPE_LABELS[t]))), (() => {
       const count = newResName.split("\n").map((n) => n.trim()).filter((n) => n.length > 0).length;
       return count === 0 ? /* @__PURE__ */ import_react.default.createElement("div", { style: { fontSize: "12px", color: "#E5484D", marginBottom: "8px" } }, "Enter at least one resource name first") : /* @__PURE__ */ import_react.default.createElement("div", { style: { fontSize: "12px", color: "#7C828C", marginBottom: "8px" } }, "Will add ", count, " ", TYPE_LABELS[newResType].toLowerCase(), count === 1 ? "" : "s");
     })(), /* @__PURE__ */ import_react.default.createElement("div", { style: { display: "flex", gap: "8px" } }, /* @__PURE__ */ import_react.default.createElement("button", { style: styles.addBtn, onClick: addResource }, "Add resource(s)"), /* @__PURE__ */ import_react.default.createElement("button", { style: styles.addBtnGhost, onClick: () => setAddResourceOpen(false) }, "Cancel")))), /* @__PURE__ */ import_react.default.createElement("div", { style: styles.body }, /* @__PURE__ */ import_react.default.createElement(
@@ -13821,48 +14643,95 @@
         /* @__PURE__ */ import_react.default.createElement("span", { style: { width: "8px", height: "8px", borderRadius: "2px", background: color.fill, flexShrink: 0 } }),
         TYPE_LABELS[type]
       ))),
-      /* @__PURE__ */ import_react.default.createElement("div", { style: styles.sectionLabel }, /* @__PURE__ */ import_react.default.createElement(Users, { size: 12 }), " Crews"),
-      /* @__PURE__ */ import_react.default.createElement("div", { style: styles.poolArea }, crews.map((r) => /* @__PURE__ */ import_react.default.createElement(Chip, { key: r.id, resource: r, onDragStart: (e) => handlePoolDragStart(e, r.id), onRemove: () => removeResource(r.id) })), crews.length === 0 && /* @__PURE__ */ import_react.default.createElement("div", { style: { fontSize: "12px", color: "#5F656E" } }, "No crews yet")),
-      /* @__PURE__ */ import_react.default.createElement("div", { style: styles.sectionLabel }, /* @__PURE__ */ import_react.default.createElement(Wrench, { size: 12 }), " Excavators"),
-      /* @__PURE__ */ import_react.default.createElement("div", { style: styles.poolArea }, equipmentPool.map((r) => /* @__PURE__ */ import_react.default.createElement(
-        Chip,
+      [
+        { key: "crews", icon: Users, label: "Crews", pool: crews, empty: "No crews yet", oos: false },
+        { key: "equipment", icon: Excavator, label: "Excavators", pool: equipmentPool, empty: "No excavators yet", oos: true },
+        { key: "miniexcavator", icon: Excavator, label: "Mini Excavators", pool: miniExcavatorPool, empty: "No mini excavators yet", oos: true },
+        { key: "dumptruck", icon: DumpTruck, label: "Dump Trucks", pool: dumpTruckPool, empty: "No dump trucks yet", oos: true },
+        { key: "smalldump", icon: Truck, label: "Small Dumps", pool: smallDumpPool, empty: "No small dumps yet", oos: true },
+        { key: "vactruck", icon: Truck, label: "VAC Trucks", pool: vacTruckPool, empty: "No VAC trucks yet", oos: true },
+        { key: "rentaltruck", icon: Truck, label: "Rental Trucks", pool: rentalTruckPool, empty: "No rental trucks yet", oos: true },
+        { key: "skidloader", icon: Wrench, label: "Skid Loaders", pool: skidLoaderPool, empty: "No skid loaders yet", oos: true },
+        { key: "cranelowboy", icon: Truck, label: "Crane/LowBoy", pool: craneLowBoyPool, empty: "No crane/lowboy units yet", oos: true },
+        { key: "attachment", icon: Link2, label: "Attachments", pool: attachmentPool, empty: "No attachments yet", oos: false },
+        { key: "driver", icon: User, label: "Drivers", pool: driverPool, empty: "No drivers yet", oos: false },
+        { key: "operator", icon: UserCog, label: "Operators", pool: operatorPool, empty: "No operators yet", oos: false }
+      ].map((sec) => {
+        const isCollapsed = !!collapsedSections[sec.key];
+        return /* @__PURE__ */ import_react.default.createElement(import_react.default.Fragment, { key: sec.key },
+          /* @__PURE__ */ import_react.default.createElement("div", { style: styles.sectionLabel, onClick: () => toggleSection(sec.key) },
+            /* @__PURE__ */ import_react.default.createElement("span", { style: { display: "flex", alignItems: "center", gap: "6px" } }, /* @__PURE__ */ import_react.default.createElement(sec.icon, { size: 12 }), " " + sec.label),
+            /* @__PURE__ */ import_react.default.createElement(ChevronRight, { size: 11, style: { transform: isCollapsed ? "none" : "rotate(90deg)", transition: "transform 0.15s", flexShrink: 0, opacity: 0.7 } })
+          ),
+          !isCollapsed && /* @__PURE__ */ import_react.default.createElement("div", { style: styles.poolArea }, sec.pool.map((r) => /* @__PURE__ */ import_react.default.createElement(
+            Chip,
+            sec.oos
+              ? { key: r.id, resource: r, onDragStart: (e) => handlePoolDragStart(e, r.id), onRemove: () => removeResource(r.id), onToggleOOS: () => toggleOutOfService(r.id), onEdit: () => startEditResource(r), editing: editingResourceId === r.id, draftValue: resourceDraftName, onDraftChange: setResourceDraftName, onSaveEdit: saveResourceEdit, onCancelEdit: cancelEditResource }
+              : { key: r.id, resource: r, onDragStart: (e) => handlePoolDragStart(e, r.id), onRemove: () => removeResource(r.id), onEdit: () => startEditResource(r), editing: editingResourceId === r.id, draftValue: resourceDraftName, onDraftChange: setResourceDraftName, onSaveEdit: saveResourceEdit, onCancelEdit: cancelEditResource }
+          )), sec.pool.length === 0 && /* @__PURE__ */ import_react.default.createElement("div", { style: { fontSize: "12px", color: "#5F656E" } }, sec.empty))
+        );
+      })
+    ), /* @__PURE__ */ import_react.default.createElement("div", { style: styles.grid, className: "crew-board-grid-area" }, /* @__PURE__ */ import_react.default.createElement("table", { style: styles.gridTable }, /* @__PURE__ */ import_react.default.createElement("thead", null, /* @__PURE__ */ import_react.default.createElement("tr", null, /* @__PURE__ */ import_react.default.createElement("th", { style: { width: "8.5%" } }), viewDays.map((d, i) => /* @__PURE__ */ import_react.default.createElement("th", { key: toDateKey(d), style: styles.dayHeaderCell }, WEEKDAY_NAMES[d.getDay()], /* @__PURE__ */ import_react.default.createElement("span", { style: styles.dayDate, className: "print-subtext" }, formatShort(d)))))), /* @__PURE__ */ import_react.default.createElement("tbody", null, sortedJobs.map((job) => /* @__PURE__ */ import_react.default.createElement("tr", { key: job.id }, /* @__PURE__ */ import_react.default.createElement(
+        "td",
         {
-          key: r.id,
-          resource: r,
-          onDragStart: (e) => handlePoolDragStart(e, r.id),
-          onRemove: () => removeResource(r.id),
-          onToggleOOS: () => toggleOutOfService(r.id)
-        }
-      )), equipmentPool.length === 0 && /* @__PURE__ */ import_react.default.createElement("div", { style: { fontSize: "12px", color: "#5F656E" } }, "No excavators yet")),
-      /* @__PURE__ */ import_react.default.createElement("div", { style: styles.sectionLabel }, /* @__PURE__ */ import_react.default.createElement(Truck, { size: 12 }), " Dump Trucks"),
-      /* @__PURE__ */ import_react.default.createElement("div", { style: styles.poolArea }, dumpTruckPool.map((r) => /* @__PURE__ */ import_react.default.createElement(
-        Chip,
-        {
-          key: r.id,
-          resource: r,
-          onDragStart: (e) => handlePoolDragStart(e, r.id),
-          onRemove: () => removeResource(r.id),
-          onToggleOOS: () => toggleOutOfService(r.id)
-        }
-      )), dumpTruckPool.length === 0 && /* @__PURE__ */ import_react.default.createElement("div", { style: { fontSize: "12px", color: "#5F656E" } }, "No dump trucks yet")),
-      /* @__PURE__ */ import_react.default.createElement("div", { style: styles.sectionLabel }, /* @__PURE__ */ import_react.default.createElement(Link2, { size: 12 }), " Attachments"),
-      /* @__PURE__ */ import_react.default.createElement("div", { style: styles.poolArea }, attachmentPool.map((r) => /* @__PURE__ */ import_react.default.createElement(Chip, { key: r.id, resource: r, onDragStart: (e) => handlePoolDragStart(e, r.id), onRemove: () => removeResource(r.id) })), attachmentPool.length === 0 && /* @__PURE__ */ import_react.default.createElement("div", { style: { fontSize: "12px", color: "#5F656E" } }, "No attachments yet")),
-      /* @__PURE__ */ import_react.default.createElement("div", { style: styles.sectionLabel }, /* @__PURE__ */ import_react.default.createElement(User, { size: 12 }), " Drivers"),
-      /* @__PURE__ */ import_react.default.createElement("div", { style: styles.poolArea }, driverPool.map((r) => /* @__PURE__ */ import_react.default.createElement(Chip, { key: r.id, resource: r, onDragStart: (e) => handlePoolDragStart(e, r.id), onRemove: () => removeResource(r.id) })), driverPool.length === 0 && /* @__PURE__ */ import_react.default.createElement("div", { style: { fontSize: "12px", color: "#5F656E" } }, "No drivers yet")),
-      /* @__PURE__ */ import_react.default.createElement("div", { style: styles.sectionLabel }, /* @__PURE__ */ import_react.default.createElement(UserCog, { size: 12 }), " Operators"),
-      /* @__PURE__ */ import_react.default.createElement("div", { style: styles.poolArea }, operatorPool.map((r) => /* @__PURE__ */ import_react.default.createElement(Chip, { key: r.id, resource: r, onDragStart: (e) => handlePoolDragStart(e, r.id), onRemove: () => removeResource(r.id) })), operatorPool.length === 0 && /* @__PURE__ */ import_react.default.createElement("div", { style: { fontSize: "12px", color: "#5F656E" } }, "No operators yet"))
-    ), /* @__PURE__ */ import_react.default.createElement("div", { style: styles.grid }, /* @__PURE__ */ import_react.default.createElement("table", { style: styles.gridTable }, /* @__PURE__ */ import_react.default.createElement("thead", null, /* @__PURE__ */ import_react.default.createElement("tr", null, /* @__PURE__ */ import_react.default.createElement("th", null), DAY_LABELS.map((d, i) => /* @__PURE__ */ import_react.default.createElement("th", { key: d, style: styles.dayHeaderCell }, d, /* @__PURE__ */ import_react.default.createElement("span", { style: styles.dayDate }, formatShort(dayDates[i])))))), /* @__PURE__ */ import_react.default.createElement("tbody", null, jobs.map((job) => /* @__PURE__ */ import_react.default.createElement("tr", { key: job.id }, /* @__PURE__ */ import_react.default.createElement("td", { style: styles.jobCell, className: "print-cell" }, /* @__PURE__ */ import_react.default.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "6px" } }, /* @__PURE__ */ import_react.default.createElement("div", null, /* @__PURE__ */ import_react.default.createElement("div", { style: styles.jobName, className: "print-title" }, job.name), /* @__PURE__ */ import_react.default.createElement("div", { style: styles.jobLoc }, job.location)), /* @__PURE__ */ import_react.default.createElement(
-      "button",
-      {
-        onClick: () => removeJob(job.id),
-        className: "no-print",
-        style: { background: "transparent", border: "none", color: "#5F656E", cursor: "pointer", padding: "2px" },
-        "aria-label": `Remove ${job.name}`
-      },
-      /* @__PURE__ */ import_react.default.createElement(X, { size: 13 })
-    ))), DAY_LABELS.map((_, day) => {
+          style: { ...styles.jobCell, background: dragOverJobId === job.id ? "#2A2E34" : styles.jobCell.background, boxShadow: dragOverJobId === job.id ? "inset 0 2px 0 #FF6A1F" : "none" },
+          className: "print-cell",
+          onDragOver: (e) => handleJobDragOver(e, job.id),
+          onDragLeave: () => setDragOverJobId((id) => id === job.id ? null : id),
+          onDrop: (e) => handleJobDrop(e, job.id)
+        },
+        /* @__PURE__ */ import_react.default.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "4px" } },
+          /* @__PURE__ */ import_react.default.createElement("div", { style: { display: "flex", alignItems: "flex-start", gap: "6px" } }, /* @__PURE__ */ import_react.default.createElement(
+            "span",
+            {
+              draggable: true,
+              onDragStart: (e) => handleJobDragStart(e, job.id),
+              onDragEnd: () => {
+                dragJobId.current = null;
+                setDragOverJobId(null);
+              },
+              style: { cursor: "grab", display: "flex", alignItems: "center", paddingTop: "2px", color: "#5F656E", flexShrink: 0 },
+              className: "no-print",
+              title: "Drag to reorder job"
+            },
+            /* @__PURE__ */ import_react.default.createElement(GripVertical, { size: 13 })
+          ), (editingJobId === job.id
+        ? /* @__PURE__ */ import_react.default.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "3px", flex: 1, minWidth: 0 }, className: "no-print" },
+            /* @__PURE__ */ import_react.default.createElement("input", {
+              autoFocus: true,
+              value: jobDraftName,
+              onChange: (e) => setJobDraftName(e.target.value),
+              onClick: (e) => e.stopPropagation(),
+              onKeyDown: (e) => { e.stopPropagation(); if (e.key === "Enter") saveJobEdit(); if (e.key === "Escape") cancelEditJob(); },
+              placeholder: "Job name",
+              style: { background: "#0E0F12", color: "#EDEBE4", border: "1px solid #3A3F46", borderRadius: "4px", padding: "3px 6px", fontSize: "12px", fontFamily: "inherit" }
+            }),
+            /* @__PURE__ */ import_react.default.createElement("input", {
+              value: jobDraftLocation,
+              onChange: (e) => setJobDraftLocation(e.target.value),
+              onClick: (e) => e.stopPropagation(),
+              onKeyDown: (e) => { e.stopPropagation(); if (e.key === "Enter") saveJobEdit(); if (e.key === "Escape") cancelEditJob(); },
+              placeholder: "Location",
+              style: { background: "#0E0F12", color: "#EDEBE4", border: "1px solid #3A3F46", borderRadius: "4px", padding: "3px 6px", fontSize: "11px", fontFamily: "inherit" }
+            })
+          )
+        : /* @__PURE__ */ import_react.default.createElement("div", null, /* @__PURE__ */ import_react.default.createElement("div", { style: styles.jobName, className: "print-title" }, job.name), /* @__PURE__ */ import_react.default.createElement("div", { style: styles.jobLoc, className: "print-subtext" }, job.location))
+          )),
+          (editingJobId === job.id
+        ? /* @__PURE__ */ import_react.default.createElement("div", { style: { display: "flex", gap: "2px", marginLeft: "19px" }, className: "no-print" },
+            /* @__PURE__ */ import_react.default.createElement("button", { onClick: () => saveJobEdit(), style: { background: "transparent", border: "none", color: "#8FD19E", cursor: "pointer", padding: "2px" }, "aria-label": "Save job" }, /* @__PURE__ */ import_react.default.createElement(Check, { size: 13 })),
+            /* @__PURE__ */ import_react.default.createElement("button", { onClick: () => cancelEditJob(), style: { background: "transparent", border: "none", color: "#E5A5A5", cursor: "pointer", padding: "2px" }, "aria-label": "Cancel edit" }, /* @__PURE__ */ import_react.default.createElement(X, { size: 13 }))
+          )
+        : /* @__PURE__ */ import_react.default.createElement("div", { style: { display: "flex", gap: "2px", marginLeft: "19px" }, className: "no-print" },
+            /* @__PURE__ */ import_react.default.createElement("button", { onClick: () => completeJob(job.id), style: { background: "transparent", border: "none", color: "#5F656E", cursor: "pointer", padding: "2px" }, title: "Mark job complete", "aria-label": `Mark ${job.name} complete` }, /* @__PURE__ */ import_react.default.createElement(Check, { size: 13 })),
+            /* @__PURE__ */ import_react.default.createElement("button", { onClick: () => startEditJob(job), style: { background: "transparent", border: "none", color: "#5F656E", cursor: "pointer", padding: "2px" }, "aria-label": `Rename ${job.name}` }, /* @__PURE__ */ import_react.default.createElement(Pencil, { size: 13 })),
+            /* @__PURE__ */ import_react.default.createElement("button", { onClick: () => removeJob(job.id), style: { background: "transparent", border: "none", color: "#5F656E", cursor: "pointer", padding: "2px" }, "aria-label": `Remove ${job.name}` }, /* @__PURE__ */ import_react.default.createElement(X, { size: 13 }))
+          )
+        ))), viewDays.map((dayDate, dayIdx) => {
+      const day = toDateKey(dayDate);
       const cellKey = `${job.id}-${day}`;
       const crewBlocks = crewAssignmentsFor(job.id, day);
+      const notesForCell = notes.filter((n) => n.jobId === job.id && n.date === day);
       const isOver = dragOverCell === cellKey;
       const isInvalid = invalidDropCell === cellKey;
       return /* @__PURE__ */ import_react.default.createElement(
@@ -13883,21 +14752,68 @@
           onDrop: (e) => handleCellDrop(e, job.id, day),
           onClick: () => handleCellClick(job.id, day)
         },
-        crewBlocks.map((crewA) => {
+        notesForCell.map((note) => /* @__PURE__ */ import_react.default.createElement(
+          "div",
+          { key: note.id, style: styles.noteCard, className: "crew-board-note-card", onClick: (e) => { e.stopPropagation(); openNoteEdit(note); } },
+          /* @__PURE__ */ import_react.default.createElement(NoteIcon, { size: 11, style: { flexShrink: 0, marginTop: "1px" }, className: "crew-board-note-icon" }),
+          /* @__PURE__ */ import_react.default.createElement("span", { style: { flex: 1, whiteSpace: "normal", overflowWrap: "break-word", wordBreak: "break-word" }, className: "crew-board-note-text" }, note.text),
+          /* @__PURE__ */ import_react.default.createElement(
+            "button",
+            {
+              onClick: (e) => {
+                e.stopPropagation();
+                removeNote(note.id);
+              },
+              style: { background: "transparent", border: "none", color: "#B08D3E", cursor: "pointer", padding: "1px", flexShrink: 0 },
+              className: "no-print",
+              "aria-label": "Remove note"
+            },
+            /* @__PURE__ */ import_react.default.createElement(X, { size: 10 })
+          )
+        )),
+        crewBlocks.length > 0 && /* @__PURE__ */ import_react.default.createElement("div", { key: "resource-group", style: styles.resourceGroup, className: "crew-board-resource-group" }, crewBlocks.map((crewA) => {
           const crewRes = resourceById[crewA.resourceId];
           if (!crewRes) return null;
           const equipKids = childAssignmentsOf(crewA.id);
-          return /* @__PURE__ */ import_react.default.createElement("div", { key: crewA.id, style: { marginBottom: "6px" } }, /* @__PURE__ */ import_react.default.createElement(
+          const equipKidsGrouped = [...equipKids].sort((a, b) => {
+            const ra = resourceById[a.resourceId];
+            const rb = resourceById[b.resourceId];
+            const ta = ra ? EQUIPMENT_TIER_TYPES.indexOf(ra.type) : 999;
+            const tb = rb ? EQUIPMENT_TIER_TYPES.indexOf(rb.type) : 999;
+            return ta - tb;
+          });
+          let prevEquipType = null;
+          return /* @__PURE__ */ import_react.default.createElement("div", { key: crewA.id, style: { marginBottom: 0, background: dragOverCrewOrderId === crewA.id ? "#262A2F" : "transparent", borderRadius: "4px" } }, /* @__PURE__ */ import_react.default.createElement(
             "div",
             {
               onDragOver: (e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                if (dragCrewOrderId.current != null && dragOverCrewOrderId !== crewA.id) setDragOverCrewOrderId(crewA.id);
               },
+              onDragLeave: () => setDragOverCrewOrderId((id) => id === crewA.id ? null : id),
               onDrop: (e) => handleCrewBlockDrop(e, crewA),
               onClick: (e) => handleCrewBlockClick(e, crewA)
             },
-            /* @__PURE__ */ import_react.default.createElement(
+            /* @__PURE__ */ import_react.default.createElement("div", { style: { display: "flex", alignItems: "center", gap: "3px" } }, /* @__PURE__ */ import_react.default.createElement(
+              "span",
+              {
+                draggable: true,
+                onDragStart: (e) => {
+                  e.stopPropagation();
+                  dragCrewOrderId.current = crewA.id;
+                  e.dataTransfer.effectAllowed = "move";
+                },
+                onDragEnd: () => {
+                  dragCrewOrderId.current = null;
+                  setDragOverCrewOrderId(null);
+                },
+                style: { cursor: "grab", display: "flex", alignItems: "center", color: "#5F656E", flexShrink: 0 },
+                className: "no-print",
+                title: "Drag to reorder"
+              },
+              /* @__PURE__ */ import_react.default.createElement(GripVertical, { size: 11 })
+            ), /* @__PURE__ */ import_react.default.createElement("div", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ import_react.default.createElement(
               Chip,
               {
                 resource: crewRes,
@@ -13905,14 +14821,18 @@
                 conflicted: isConflicted(crewRes.id, day),
                 onDragStart: (e) => handleChipDragStart(e, crewRes.id, crewA.id),
                 onRemove: () => removeAssignment(crewA.id),
-                onCopy: () => setCopySource(crewA)
+                onCopy: () => setCopySource(crewA),
+                selectable: false,
+                printLevel: "parent"
               }
-            )
-          ), /* @__PURE__ */ import_react.default.createElement(NestedBlock, null, equipKids.map((eqA) => {
+            )))
+          ), /* @__PURE__ */ import_react.default.createElement(NestedBlock, null, equipKidsGrouped.map((eqA) => {
             const eqRes = resourceById[eqA.resourceId];
             if (!eqRes) return null;
             const attachKids = childAssignmentsOf(eqA.id);
-            return /* @__PURE__ */ import_react.default.createElement("div", { key: eqA.id, style: { marginBottom: "4px" } }, /* @__PURE__ */ import_react.default.createElement("div", { style: { display: "flex", alignItems: "center", gap: "3px" } }, /* @__PURE__ */ import_react.default.createElement(CornerDownRight, { size: 11, color: "#4A4F57", style: { flexShrink: 0 }, "aria-hidden": "true" }), /* @__PURE__ */ import_react.default.createElement(
+            const showTypeLabel = eqRes.type !== prevEquipType;
+            prevEquipType = eqRes.type;
+            return /* @__PURE__ */ import_react.default.createElement("div", { key: eqA.id, style: { marginBottom: "4px" }, className: "crew-board-parent-item" }, showTypeLabel && /* @__PURE__ */ import_react.default.createElement("div", { style: { fontSize: "9px", letterSpacing: "0.06em", textTransform: "uppercase", color: "#5F656E", margin: "3px 0 2px" }, className: "no-print" }, TYPE_LABELS[eqRes.type]), /* @__PURE__ */ import_react.default.createElement("div", { style: { display: "flex", alignItems: "center", gap: "3px" } }, /* @__PURE__ */ import_react.default.createElement(CornerDownRight, { size: 11, color: "#4A4F57", style: { flexShrink: 0 }, "aria-hidden": "true", className: "no-print" }), /* @__PURE__ */ import_react.default.createElement(
               "div",
               {
                 style: { flex: 1 },
@@ -13930,32 +14850,70 @@
                   dense: true,
                   conflicted: isConflicted(eqRes.id, day),
                   onDragStart: (e) => handleChipDragStart(e, eqRes.id, eqA.id),
-                  onRemove: () => removeAssignment(eqA.id)
+                  onRemove: () => removeAssignment(eqA.id),
+                  selectable: false,
+                  printLevel: "parent"
                 }
               )
-            )), attachKids.length > 0 && /* @__PURE__ */ import_react.default.createElement("div", { style: { marginLeft: "16px", borderLeft: "2px solid #2A2E34", paddingLeft: "8px" } }, attachKids.map((atA) => {
+            )), attachKids.length > 0 && /* @__PURE__ */ import_react.default.createElement("div", { style: { marginLeft: "16px", borderLeft: "2px solid #2A2E34", paddingLeft: "8px" }, className: "crew-board-nest-line" }, attachKids.map((atA) => {
               const atRes = resourceById[atA.resourceId];
               if (!atRes) return null;
-              return /* @__PURE__ */ import_react.default.createElement("div", { key: atA.id, style: { display: "flex", alignItems: "center", gap: "3px" } }, /* @__PURE__ */ import_react.default.createElement(CornerDownRight, { size: 10, color: "#3E434B", style: { flexShrink: 0 }, "aria-hidden": "true" }), /* @__PURE__ */ import_react.default.createElement("div", { style: { flex: 1 } }, /* @__PURE__ */ import_react.default.createElement(
+              return /* @__PURE__ */ import_react.default.createElement("div", { key: atA.id, style: { display: "flex", alignItems: "center", gap: "3px" } }, /* @__PURE__ */ import_react.default.createElement(CornerDownRight, { size: 10, color: "#3E434B", style: { flexShrink: 0 }, "aria-hidden": "true", className: "no-print" }), /* @__PURE__ */ import_react.default.createElement("div", { style: { flex: 1 } }, /* @__PURE__ */ import_react.default.createElement(
                 Chip,
                 {
                   resource: atRes,
                   dense: true,
                   conflicted: isConflicted(atRes.id, day),
                   onDragStart: (e) => handleChipDragStart(e, atRes.id, atA.id),
-                  onRemove: () => removeAssignment(atA.id)
+                  onRemove: () => removeAssignment(atA.id),
+                  printLevel: "child"
                 }
               )));
             })));
           })));
-        }),
-        crewBlocks.length === 0 && /* @__PURE__ */ import_react.default.createElement("div", { style: { fontSize: "11px", color: "#3E434B", textAlign: "center", padding: "10px 0" } }, /* @__PURE__ */ import_react.default.createElement(Pin, { size: 12, style: { opacity: 0.4 } }))
+        })),
+        crewBlocks.length === 0 && notesForCell.length === 0 && editingNoteCell !== cellKey && /* @__PURE__ */ import_react.default.createElement("div", { style: { fontSize: "11px", color: "#3E434B", textAlign: "center", padding: "10px 0" } }, /* @__PURE__ */ import_react.default.createElement(Pin, { size: 12, style: { opacity: 0.4 } })),
+        editingNoteCell === cellKey ? /* @__PURE__ */ import_react.default.createElement(
+          "div",
+          { style: { marginTop: "4px" }, className: "no-print", onClick: (e) => e.stopPropagation() },
+          /* @__PURE__ */ import_react.default.createElement("textarea", {
+            autoFocus: true,
+            value: noteDraftText,
+            onChange: (e) => setNoteDraftText(e.target.value),
+            onKeyDown: (e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                saveNoteDraft(job.id, day);
+              } else if (e.key === "Escape") {
+                cancelNoteEdit();
+              }
+            },
+            placeholder: "Note — manhole location, special task…",
+            style: styles.noteInput
+          }),
+          /* @__PURE__ */ import_react.default.createElement("div", { style: { display: "flex", gap: "6px", marginTop: "4px" } },
+            /* @__PURE__ */ import_react.default.createElement("button", { onClick: () => saveNoteDraft(job.id, day), style: { ...styles.navBtn, fontSize: "11px", padding: "2px 8px" } }, "Save"),
+            /* @__PURE__ */ import_react.default.createElement("button", { onClick: () => cancelNoteEdit(), style: { ...styles.navBtn, fontSize: "11px", padding: "2px 8px", color: "#8A8F97" } }, "Cancel")
+          )
+        ) : /* @__PURE__ */ import_react.default.createElement(
+          "button",
+          {
+            className: "no-print",
+            onClick: (e) => {
+              e.stopPropagation();
+              openNoteEditor(job.id, day);
+            },
+            style: styles.addNoteBtn
+          },
+          /* @__PURE__ */ import_react.default.createElement(NoteIcon, { size: 10 }),
+          " Note"
+        )
       );
-    }))))), jobs.length === 0 && /* @__PURE__ */ import_react.default.createElement("div", { style: { color: "#5F656E", fontSize: "13px", padding: "20px" } }, "No jobs yet \u2014 add one to start scheduling."))));
+    }))))), jobs.length === 0 && /* @__PURE__ */ import_react.default.createElement("div", { style: { color: "#5F656E", fontSize: "13px", padding: "20px" } }, "No jobs yet \u2014 add one to start scheduling."))), completedJobsPanel, importConfirmModal);
   }
   var root = import_client.default.createRoot(document.getElementById("root"));
   root.render(
-    /* @__PURE__ */ import_react.default.createElement("div", { style: { maxWidth: "1200px", margin: "0 auto", padding: "16px" } }, /* @__PURE__ */ import_react.default.createElement(CrewScheduler, null))
+    /* @__PURE__ */ import_react.default.createElement("div", { style: { maxWidth: "1600px", margin: "0 auto", padding: "16px" }, className: "crew-board-outer" }, /* @__PURE__ */ import_react.default.createElement(CrewScheduler, null))
   );
 })();
 /*! Bundled license information:
